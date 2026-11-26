@@ -96,6 +96,16 @@ Go is a clean fit for local MCP App plugins:
 1. **Official Go SDK**: [`github.com/modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk) infers tool input schemas straight from Go structs and automatically serializes your output struct for the UI.
 2. **Single-binary packaging with `//go:embed`**: Once the frontend is bundled into `dist/app.html`, `//go:embed dist/app.html` bakes it into your compiled Go binary—so users don't need Node.js or Python installed at runtime.
 
+### Prerequisites
+
+Before running `/mcp-app-development`, make sure the following tools are installed on the machine running Antigravity so the agent can bundle, compile, and test what it generates:
+
+- **Google Antigravity App (`v2.34.0+`)** and the **`agy` CLI** — provides `/mcp-app-development`, renders inline MCP Apps, and validates/installs local plugins.
+- **Go (`1.25+`)** — compiles and tests the Go MCP servers. *(If you ask `/mcp-app-development` for a Node/TypeScript or Python server instead, install that runtime instead of Go.)*
+- **Node.js (`20+`) and `npm` (build-time only)** — needed on your development machine even for a Go MCP App so `esbuild` can bundle `ui/app.js` and `@modelcontextprotocol/ext-apps` into one self-contained `dist/app.html` file. Once `go build` embeds that HTML into the binary, Node.js is not required at runtime.
+
+*(Python is not needed for the Go examples in this post.)*
+
 ---
 
 ## 4. Example 1: Hello World in Go

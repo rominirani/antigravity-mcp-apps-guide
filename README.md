@@ -10,7 +10,7 @@ Hands-on guides and runnable MCP App plugins for the [MCP Apps specification (SE
 ## Prerequisites
 
 - **Google Antigravity App** (`v2.34.0+`) and the `agy` CLI
-- **Go** (`1.24+`) for the Go examples in [`go-examples/`](./go-examples/)
+- **Go** (`1.25+`) for the Go examples in [`go-examples/`](./go-examples/)
 - **Node.js** (`20+`) — used at build time to bundle the single-file UI into `dist/app.html` (not required at runtime for the compiled Go binaries), and for the Node/TypeScript examples
 - **Python** (`3.11+`) — only needed for [`examples/01-json-regex-visualizer/`](./examples/01-json-regex-visualizer/)
 
