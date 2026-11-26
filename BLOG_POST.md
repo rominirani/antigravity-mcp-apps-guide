@@ -10,14 +10,7 @@ Suggested Titles:
 ![MCP Apps in Google Antigravity — Overview Infographic](images/00_mcp_apps_hero_infographic.png)
 *MCP Apps in Google Antigravity at a glance: how tools pair with ui:// views, what /mcp-app-development scaffolds, the two Go examples in this guide, and key rules to keep in mind.*
 
-> **No prior MCP Apps experience required.** This guide walks through the basics of the MCP Apps specification (SEP-1865), how the `/mcp-app-development` command works in Google Antigravity, and how to build, test, and package two inline MCP Apps in **Go**—starting with a small Hello World card and expanding it into an interactive checklist.
->
-> **Companion Repository:** All source code, tests, plugin manifests, and diagrams for this post live at [github.com/rominirani/antigravity-mcp-apps-guide](https://github.com/rominirani/antigravity-mcp-apps-guide).
-
-```bash
-git clone https://github.com/rominirani/antigravity-mcp-apps-guide.git
-cd antigravity-mcp-apps-guide
-```
+> **No prior MCP Apps experience required.** This guide walks through the basics of the MCP Apps specification (SEP-1865), how the `/mcp-app-development` command works in Google Antigravity, and how to scaffold, inspect, and install two inline MCP Apps in **Go**—starting with a small Hello World card and expanding it into an interactive checklist.
 
 ---
 
@@ -25,10 +18,10 @@ cd antigravity-mcp-apps-guide
 
 1. **[Why MCP Apps Exist](#1-why-mcp-apps-exist)** — Where text-only MCP tools run into friction, and how MCP Apps compare to plain tools and `/generative_ui`.
 2. **[MCP Apps Basics](#2-mcp-apps-basics)** — The four-part mental model behind every MCP App.
-3. **[Using `/mcp-app-development` in Antigravity](#3-using-mcp-app-development-in-antigravity)** — How the slash command scaffolds an MCP App for you, and why Go is a nice fit.
-4. **[Example 1: Hello World in Go (`01-hello-world`)](#4-example-1-hello-world-in-go)** — Scaffolding your first inline greeting card with a live button that calls back into your Go server.
-5. **[Example 2: Interactive Quick Checklist (`02-quick-checklist`)](#5-example-2-interactive-quick-checklist)** — Adding UI-only actions, server-side persistence, and a button that attaches checklist progress to your next prompt.
-6. **[Packaging & Iterating as an Antigravity Plugin](#6-packaging--iterating-as-an-antigravity-plugin)** — One Go-specific plugin config tip and a quick edit-rebuild loop.
+3. **[Using `/mcp-app-development` in Antigravity](#3-using-mcp-app-development-in-antigravity)** — How the slash command scaffolds an MCP App for you, why Go is a nice fit, and what to have installed first.
+4. **[Example 1: Hello World in Go](#4-example-1-hello-world-in-go)** — Scaffolding your first inline greeting card with a live button that calls back into your Go server.
+5. **[Example 2: Interactive Quick Checklist](#5-example-2-interactive-quick-checklist)** — Adding UI-only actions, server-side persistence, and a button that attaches checklist progress to your next prompt.
+6. **[Packaging & Iterating as an Antigravity Plugin](#6-packaging--iterating-as-an-antigravity-plugin)** — One Go-specific plugin config quirk to watch for and a quick edit-rebuild loop.
 7. **[Common Issues & Things to Try](#7-common-issues--things-to-try)** — A short troubleshooting table and a few small ideas to experiment with next.
 8. **[Going Deeper: Suggested Reading Order](#8-going-deeper-suggested-reading-order)** — Where to read next, in order, when you are ready to explore the rest of the MCP Apps standard.
 
@@ -94,15 +87,15 @@ By default, an MCP App renders **inline** right inside the chat stream in place 
 Go is a clean fit for local MCP App plugins:
 
 1. **Official Go SDK**: [`github.com/modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk) infers tool input schemas straight from Go structs and automatically serializes your output struct for the UI.
-2. **Single-binary packaging with `//go:embed`**: Once the frontend is bundled into `dist/app.html`, `//go:embed dist/app.html` bakes it into your compiled Go binary—so users don't need Node.js or Python installed at runtime.
+2. **Single-binary packaging with `//go:embed`**: Once the frontend is bundled into a single HTML file, `//go:embed` bakes it straight into your compiled Go binary—so end users don't need Node.js or Python installed at runtime.
 
 ### Prerequisites
 
 Before running `/mcp-app-development`, make sure the following tools are installed on the machine running Antigravity so the agent can bundle, compile, and test what it generates:
 
 - **Google Antigravity App (`v2.34.0+`)** and the **`agy` CLI** — provides `/mcp-app-development`, renders inline MCP Apps, and validates/installs local plugins.
-- **Go (`1.25+`)** — compiles and tests the Go MCP servers. *(If you ask `/mcp-app-development` for a Node/TypeScript or Python server instead, install that runtime instead of Go.)*
-- **Node.js (`20+`) and `npm` (build-time only)** — needed on your development machine even for a Go MCP App so `esbuild` can bundle `ui/app.js` and `@modelcontextprotocol/ext-apps` into one self-contained `dist/app.html` file. Once `go build` embeds that HTML into the binary, Node.js is not required at runtime.
+- **Go (`1.24+`)** — compiles and tests the Go MCP servers. *(If you ask `/mcp-app-development` for a Node/TypeScript or Python server instead, install that runtime instead of Go.)*
+- **Node.js (`20+`) and `npm` (build-time only)** — needed on your development machine even for a Go MCP App so the generated build step (typically Vite + `vite-plugin-singlefile` or `esbuild`) can bundle your frontend code and `@modelcontextprotocol/ext-apps` into one self-contained HTML file. Once `go build` embeds that HTML into the binary, Node.js is not required at runtime.
 
 *(Python is not needed for the Go examples in this post.)*
 
@@ -110,9 +103,7 @@ Before running `/mcp-app-development`, make sure the following tools are install
 
 ## 4. Example 1: Hello World in Go
 
-> **Companion Code:** [`go-examples/01-hello-world/`](https://github.com/rominirani/antigravity-mcp-apps-guide/tree/main/go-examples/01-hello-world)
-
-Let's start with the simplest useful MCP App: **1 tool (`say_hello`)** and **1 embedded UI resource (`ui://hello-world/app.html`)**.
+Let's start with the simplest useful MCP App: **1 tool (`say_hello`)** linked to **1 embedded `ui://` HTML view**.
 
 When the agent calls `say_hello(name="Ada")`, Antigravity renders a themed greeting card inline showing the server timestamp and call count. Clicking **Ping Server Again** inside the card calls `say_hello` directly on the Go server, updating the timestamp and count without another LLM turn.
 
@@ -121,103 +112,76 @@ When the agent calls `say_hello(name="Ada")`, Antigravity renders a themed greet
 
 ### Step 1: Scaffold the App with `/mcp-app-development`
 
-Start by creating an empty folder (for example, `hello-mcp-app/`) and opening it as a project in the **Antigravity App**. Type `/` in the chat box, choose **`mcp-app-development`**, and describe what you want in plain language:
+Create an empty folder (for example, `hello-mcp-app/`) and open it as a project in the **Antigravity App**. Type `/` in the chat box, choose **`mcp-app-development`**, and describe what you want in plain language:
 
 ```text
 /mcp-app-development Build a simple Hello World MCP App in Go packaged as an Antigravity plugin. Add a say_hello tool that takes an optional name and renders an inline greeting card showing the server time, a call counter, and a "Ping Server Again" button that refreshes from the server.
 ```
 
-Notice you don't need to mention `ui://` URIs, MIME types, bundlers, or plugin manifest keys—the `/mcp-app-development` skill supplies those conventions automatically. Your generated file names or frontend bundler may differ slightly from the reference project in [`go-examples/01-hello-world/`](https://github.com/rominirani/antigravity-mcp-apps-guide/tree/main/go-examples/01-hello-world), which is completely fine—the MCP Apps wiring underneath is the same:
+Notice you don't need to mention `ui://` URIs, MIME types, bundlers, or plugin manifest keys—the `/mcp-app-development` skill supplies those conventions automatically.
 
-```text
-go-examples/01-hello-world/
-├── go.mod
-├── main.go               # Go MCP server (~115 lines) with //go:embed dist/app.html
-├── main_test.go          # In-memory MCP client/server test
-├── ui/
-│   ├── package.json      # @modelcontextprotocol/ext-apps + esbuild
-│   ├── app.js            # Vanilla JS frontend (~55 lines)
-│   └── build.mjs         # Bundles ui/app.js + CSS into ../dist/app.html
-├── plugin.json           # Antigravity plugin manifest
-├── mcp_config.json       # Launches the compiled Go binary
-└── assets/logo.svg       # Plugin icon
-```
+As it runs, Antigravity will scaffold the Go server, a frontend project (usually TypeScript with Vite + `vite-plugin-singlefile`, or Vanilla JS with `esbuild`), Go tests, `plugin.json`, and `mcp_config.json`—and will typically run the build, tests, and `agy plugin validate --strict .` for you. Exact folder layouts vary from run to run (for example, a standard `cmd/` + `internal/` Go layout with a `Makefile`, or a flatter single-file `main.go`), which is completely expected.
 
-### Step 2: What to Look For in `main.go`
+### Step 2: What to Verify in the Generated Go Server
 
-You don't need to write the boilerplate from scratch—just open the generated `main.go` (full file: [`go-examples/01-hello-world/main.go`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/01-hello-world/main.go)) and verify the three MCP Apps wiring points:
+Rather than expecting a specific filename, look inside the generated Go server code (for example `internal/server/server.go` or `main.go`) and confirm the three MCP Apps wiring points are in place:
 
 ```go
-//go:embed dist/app.html
+// 1. Embed the compiled single-file HTML bundle inside the Go binary.
+//go:embed dist/index.html
 var embeddedAppHTML string
 
-// 1. Serve the bundled HTML as a ui:// resource with the MCP App MIME type.
+// 2. Expose it as a ui:// resource with the MCP App MIME type.
 server.AddResource(&mcp.Resource{
-	URI:      "ui://hello-world/app.html",
+	URI:      appURI, // e.g., "ui://hello-world/card.html"
 	MIMEType: "text/html;profile=mcp-app",
 }, readAppHTMLHandler)
 
-// 2. Link say_hello to that resource via _meta.ui.resourceUri.
+// 3. Link say_hello to that resource via _meta.ui.resourceUri.
 mcp.AddTool(server, &mcp.Tool{
 	Name: "say_hello",
-	Meta: mcp.Meta{"ui": map[string]any{"resourceUri": "ui://hello-world/app.html"}},
-}, func(ctx context.Context, req *mcp.CallToolRequest, in HelloInput) (*mcp.CallToolResult, HelloOutput, error) {
-	out := HelloOutput{Name: name, Greeting: greeting, ServerTime: now, PingCount: count}
-	res := &mcp.CallToolResult{Content: []mcp.Content{&mcp.TextContent{Text: summary}}}
-	return res, out, nil // Go SDK marshals `out` into structuredContent automatically
-})
+	Meta: mcp.Meta{"ui": map[string]any{"resourceUri": appURI}},
+}, sayHelloHandler)
 ```
 
-`CallToolResult.Content` provides the short plain-text fallback for the LLM and CLI clients, while the returned `HelloOutput` struct becomes `structuredContent` for the iframe.
+Inside the tool handler, `CallToolResult.Content` provides the short plain-text summary for the LLM and CLI clients, while the returned Go output struct is serialized automatically into `structuredContent` for the iframe.
 
-### Step 3: What to Look For in `ui/app.js`
+### Step 3: What to Verify in the Generated Frontend
 
-Similarly, in the generated frontend (full file: [`go-examples/01-hello-world/ui/app.js`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/01-hello-world/ui/app.js)), the only MCP Apps–specific logic is connecting the `App` bridge in the right order:
+Next, look inside the generated frontend entry file (typically `ui/src/main.ts` or `ui/app.js`). Regardless of whether Antigravity chose TypeScript with Vite or Vanilla JS with `esbuild`, the MCP Apps bridge follows the same three-step sequence:
 
-```js
+```ts
 import { App, applyDocumentTheme, applyHostStyleVariables } from "@modelcontextprotocol/ext-apps";
 
 const app = new App({ name: "Hello MCP App", version: "1.0.0" }, {});
 
-// 1. Register handlers BEFORE calling app.connect().
-app.ontoolresult = (result) => render(result?.structuredContent);
-app.onhostcontextchanged = applyTheme;
+// 1. Register tool & theme listeners BEFORE calling app.connect().
+app.addEventListener("toolresult", (result) => render(result.structuredContent));
+app.addEventListener("hostcontextchanged", applyTheme);
 
 // 2. Call back into the Go server directly on button click.
 refreshBtn.addEventListener("click", async () => {
   const result = await app.callServerTool({ name: "say_hello", arguments: { name: currentName } });
-  render(result?.structuredContent);
+  render(result.structuredContent);
 });
 
-// 3. Complete the handshake and sync the host's light/dark theme.
+// 3. Complete the handshake and sync the host's Light/Dark theme.
 await app.connect();
 applyTheme(app.getHostContext());
 ```
 
-In the full file, `render()` writes values safely with `textContent` (never `innerHTML`), hides the refresh button if a host doesn't support tool callbacks, and [`ui/build.mjs`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/01-hello-world/ui/build.mjs) uses `esbuild` to bundle everything into `dist/app.html`.
+*(Depending on the SDK style Antigravity picks, you may see `app.ontoolresult = ...` instead of `app.addEventListener("toolresult", ...)`—both work identically. Also check that DOM updates use `textContent` rather than `innerHTML` so user input is never interpreted as HTML.)*
 
-### Step 4: Build, Test & Try It in Antigravity
+### Step 4: Validate, Install & Try It in Antigravity
 
-Because the iframe UI runs in the browser and imports `@modelcontextprotocol/ext-apps` from npm, `npm` is used once at **build time** to bundle `ui/app.js` and its CSS into `dist/app.html`. Once `go build` embeds that file into `scripts/hello-server`, Node.js is no longer needed at runtime.
+In most runs, `/mcp-app-development` builds the single-file UI, compiles the Go binary, and runs the tests for you (often exposing `make build` / `make test` in a generated `Makefile`). From the project folder, confirm strict plugin validation and install the plugin locally:
 
 ```bash
-cd go-examples/01-hello-world
-
-# 1. Build-time only: bundle ui/app.js + @modelcontextprotocol/ext-apps into dist/app.html
-npm --prefix ui install
-npm --prefix ui run build
-
-# 2. Test and compile the standalone Go binary (embeds dist/app.html)
-go mod tidy
-go test -v ./...
-mkdir -p scripts && go build -o scripts/hello-server .
-
-# 3. Validate and install the Antigravity plugin
 agy plugin validate --strict .
 agy plugin install .
 ```
 
-You should see the Go test pass (`PASS`) and plugin validation print `✔ Validation passed`. Then open a chat in the **Antigravity App** and ask:
+Then open a chat in the **Antigravity App** and ask:
 
 ```text
 Greet Ada using the say_hello tool.
@@ -229,13 +193,11 @@ You should see the inline greeting card appear directly in chat, and clicking **
 
 ## 5. Example 2: Interactive Quick Checklist
 
-> **Companion Code:** [`go-examples/02-quick-checklist/`](https://github.com/rominirani/antigravity-mcp-apps-guide/tree/main/go-examples/02-quick-checklist)
-
 Once Hello World makes sense, a natural next question is: *how do I build an inline UI that manages real state and feeds updates back into my conversation?*
 
-Example 2 stays on the same **Go + `//go:embed`** stack and adds **three capabilities**:
+Example 2 stays on the same **Go + `//go:embed`** pattern and adds **three capabilities**:
 
-1. **UI-only tools (`visibility: ["app"]`)**: The model only sees `create_checklist`. Toggling or adding items stays hidden from the model while remaining callable directly from the card.
+1. **UI-only tools (`visibility: ["app"]`)**: The model only sees `create_checklist`. Actions like toggling, adding, removing, or reloading items stay hidden from the model while remaining callable directly from the card.
 2. **Server-side persistence (`PLUGIN_DATA`)**: Because browser storage in the iframe isn't permanent, the Go server writes every change immediately to Antigravity's per-plugin data directory (`PLUGIN_DATA`).
 3. **Attaching UI state to your next prompt (`updateModelContext`)**: Clicking **Attach Remaining Items to Prompt** puts a context pill on your next chat message so the agent knows which checklist items are done and which remain.
 
@@ -244,17 +206,17 @@ Example 2 stays on the same **Go + `//go:embed`** stack and adds **three capabil
 
 ### Step 1: Scaffold Quick Checklist with `/mcp-app-development`
 
-Open a fresh folder (for example, `quick-checklist/`) in the **Antigravity App** and describe the app naturally:
+Open a fresh empty folder (for example, `quick-checklist/`) in the **Antigravity App** and describe the app naturally:
 
 ```text
 /mcp-app-development Build an inline checklist MCP App in Go packaged as an Antigravity plugin. Let the agent create a checklist with a title and items; inside the card, let me check off items, add new ones, keep my progress across restarts, and click a button to attach the remaining items to my next chat prompt.
 ```
 
-Once Antigravity finishes scaffolding, walk through the two key additions it generated (full reference: [`go-examples/02-quick-checklist/`](https://github.com/rominirani/antigravity-mcp-apps-guide/tree/main/go-examples/02-quick-checklist)).
+Antigravity will typically generate one model-facing `create_checklist` tool, several `app_*` UI-only helper tools (for toggling, adding, removing, and reloading persisted checklist state after a restart), disk persistence under `PLUGIN_DATA`, and the bundled interactive UI.
 
-### Step 2: What to Look For in `main.go`
+### Step 2: What to Verify in the Generated Go Server
 
-In [`go-examples/02-quick-checklist/main.go`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/02-quick-checklist/main.go), the model-facing tool points to `resourceUri`, while the UI-only helper tools set `visibility: ["app"]`:
+In the generated Go server code, look for the split between the model-facing tool (`resourceUri`) and the UI-only helper tools (`visibility: ["app"]`):
 
 ```go
 // Visible to the model: creates a checklist and opens the inline card.
@@ -265,50 +227,34 @@ mcp.AddTool(server, &mcp.Tool{
 
 // Hidden from the model in UI hosts; callable only from the checklist card.
 mcp.AddTool(server, &mcp.Tool{
-	Name: "app_toggle_item",
+	Name: "app_toggle_item", // exact helper names vary per run
 	Meta: mcp.Meta{"ui": map[string]any{"visibility": []string{"app"}}},
 }, toggleHandler)
 ```
 
-On startup, `main()` reads `os.Getenv("PLUGIN_DATA")` (set automatically by Antigravity to a writable folder outside your workspace) and persists every edit to `checklists.json` immediately.
+Also verify that the server reads Antigravity's persistent data directory—either via `os.Getenv("PLUGIN_DATA")` or a `--data-dir=${PLUGIN_DATA}` flag passed from `mcp_config.json`—and saves edits to disk immediately on every change.
 
-### Step 3: What to Look For in `ui/app.js`
+### Step 3: What to Verify in the Generated Frontend
 
-In [`go-examples/02-quick-checklist/ui/app.js`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/02-quick-checklist/ui/app.js), clicking **Attach Remaining Items to Prompt** calls `app.updateModelContext()` with a plain-text summary (and clicking **Clear Context** passes an empty `content` array). The button is hidden automatically if the host doesn't advertise context support:
+In the generated UI code, look for the click handler that calls `app.updateModelContext()` with a plain-text summary of remaining items (and passes an empty `content: []` array to clear it), gated on `app.getHostCapabilities()?.updateModelContext`:
 
-```js
+```ts
 attachBtn.addEventListener("click", async () => {
-  const remaining = checklist.items.filter((i) => !i.done).map((i) => `- [ ] ${i.label}`);
-
   await app.updateModelContext({
-    content: [
-      {
-        type: "text",
-        text: `Checklist: ${checklist.title} (${checklist.doneCount}/${checklist.total} complete)\n` +
-              (remaining.length ? `Remaining:\n${remaining.join("\n")}` : "All items complete."),
-      },
-    ],
+    content: [{ type: "text", text: formatRemainingSummary(checklist) }],
   });
 });
 
-clearCtxBtn.addEventListener("click", () => app.updateModelContext({ content: [] }));
+clearBtn.addEventListener("click", () => app.updateModelContext({ content: [] }));
 ```
 
-### Step 4: Build, Test & Try It in Antigravity
+*(One subtle detail you may notice in the generated UI: because the sandbox's default CSP blocks `<form>` submissions, the input row typically uses a plain container with a `<button type="button">` and an `Enter` key listener rather than a `<form>` tag.)*
+
+### Step 4: Validate, Install & Try It in Antigravity
+
+Once Antigravity finishes building and testing the generated project, validate and install it from the project folder:
 
 ```bash
-cd go-examples/02-quick-checklist
-
-# 1. Build-time only: bundle the frontend UI into dist/app.html
-npm --prefix ui install
-npm --prefix ui run build
-
-# 2. Test and compile the standalone Go binary (embeds dist/app.html)
-go mod tidy
-go test -v ./...
-mkdir -p scripts && go build -o scripts/checklist-server .
-
-# 3. Validate and install the Antigravity plugin
 agy plugin validate --strict .
 agy plugin install .
 ```
@@ -319,7 +265,7 @@ Then try it in an Antigravity App conversation:
 Create a PR review checklist for this repository using create_checklist.
 ```
 
-Check off a couple of items in the inline card, click **Attach Remaining Items to Prompt**, and send a follow-up message—you will see the attached checklist summary appear as a context pill on your prompt.
+Check off a couple of items in the inline card, click the button to attach remaining items, and send a follow-up message—you will see the attached checklist summary appear as a context pill on your prompt.
 
 ---
 
@@ -329,14 +275,16 @@ Check off a couple of items in the inline card, click **Attach Remaining Items t
 
 ### Launching a Compiled Go Binary in `mcp_config.json`
 
-Antigravity expands `${PLUGIN_ROOT}` and `${PLUGIN_DATA}` inside `args`, `env`, and `cwd`—not inside `command`. If you put `"command": "${PLUGIN_ROOT}/scripts/hello-server"`, `agy plugin validate --strict` flags a warning. Invoke the binary via `"command": "env"` instead (and place binaries under `scripts/` so executable permissions are preserved):
+Antigravity expands `${PLUGIN_ROOT}` and `${PLUGIN_DATA}` inside `args`, `env`, and `cwd`—not inside `command`. If `mcp_config.json` puts `"command": "${PLUGIN_ROOT}/bin/my-server"`, `agy plugin validate --strict` flags a warning.
+
+To keep strict validation clean, launch your compiled Go binary through `args`—either with a small executable shell wrapper (using `exec` so stdio passes straight through) or via `"command": "env"`:
 
 ```json
 {
   "mcpServers": {
     "hello": {
-      "command": "env",
-      "args": ["${PLUGIN_ROOT}/scripts/hello-server"]
+      "command": "bash",
+      "args": ["${PLUGIN_ROOT}/scripts/launch.sh"]
     }
   }
 }
@@ -344,8 +292,8 @@ Antigravity expands `${PLUGIN_ROOT}` and `${PLUGIN_DATA}` inside `args`, `env`, 
 
 ### Quick Edit-Rebuild Loop
 
-- **Editing HTML/JS/CSS**: Re-run `npm --prefix ui run build`. If you set `HELLO_APP_HTML` (or `CHECKLIST_APP_HTML`) to point at `dist/app.html` during development, closing and reopening the card picks up the updated UI without recompiling Go or restarting the server.
-- **Editing Go server code**: Recompile (`go build -o scripts/hello-server .`), then restart the server from **Customizations > Installed > \<plugin\> > MCP > More actions (`⋮`) > Restart** in the Antigravity App.
+- **Editing the UI**: Re-run the generated UI build command (for example `make build`, or `npm run build` inside `ui/`). Many generated servers also support an environment variable override (such as `HELLO_APP_HTML`) pointing directly at the built HTML file on disk—when set, closing and reopening the card picks up UI edits without recompiling Go or restarting the server.
+- **Editing Go server code**: Recompile the binary (for example `make build` or `go build`), then restart the server from **Customizations > Installed > \<plugin\> > MCP > More actions (`⋮`) > Restart** in the Antigravity App.
 
 ---
 
@@ -356,18 +304,18 @@ Antigravity expands `${PLUGIN_ROOT}` and `${PLUGIN_DATA}` inside `args`, `env`, 
 | Symptom | Likely Cause | Fix |
 | :--- | :--- | :--- |
 | **Error card instead of UI** | Wrong MIME type or missing UI resource. | Return `text/html;profile=mcp-app` from `server.AddResource`. |
-| **Blank iframe** | `app.connect()` failed, or external scripts/styles were blocked by the sandbox. | Bundle JS and CSS inline into one HTML file (`dist/app.html`). |
-| **Card stays stuck on "Connecting..."** | Event handlers were registered after `await app.connect()`. | Register `ontoolresult` and `onhostcontextchanged` before `app.connect()`. |
+| **Blank iframe** | `app.connect()` failed, or external scripts/styles were blocked by the sandbox. | Bundle JS and CSS inline into a single self-contained HTML file. |
+| **Card stays stuck on "Connecting..."** | Event handlers were registered after `await app.connect()`. | Register `toolresult` / `ontoolresult` and `hostcontextchanged` before `app.connect()`. |
 | **Button callback fails** | Tool is hidden from the UI or belongs to another server. | Set `visibility: ["app"]` (or omit `visibility`) on the same MCP server. |
-| **Colors look wrong after Light/Dark toggle** | Host theme was only applied once at startup. | Apply host theme both after `connect()` and inside `onhostcontextchanged`. |
-| **`agy plugin validate --strict` warns on `command`** | `${PLUGIN_ROOT}` was placed in `command` instead of `args`. | Use `"command": "env"` and `"args": ["${PLUGIN_ROOT}/scripts/<binary>"]`. |
+| **Colors look wrong after Light/Dark toggle** | Host theme was only applied once at startup. | Apply host theme both after `connect()` and inside `hostcontextchanged`. |
+| **`agy plugin validate --strict` warns on `command`** | `${PLUGIN_ROOT}` was placed in `command` instead of `args`. | Launch the binary through `args` (e.g., `"command": "bash"` with a launcher script, or `"command": "env"`). |
 
 ### Things to Try Next
 
-1. **Add a delete button to Quick Checklist**: Ask `/mcp-app-development` to add an app-only delete action to [`go-examples/02-quick-checklist/`](https://github.com/rominirani/antigravity-mcp-apps-guide/tree/main/go-examples/02-quick-checklist) with a remove button next to each item.
+1. **Extend your checklist card**: Ask `/mcp-app-development` inside your checklist folder to add filtering (*All / Remaining / Completed*) or a clear-completed button backed by an app-only tool.
 2. **Send a follow-up prompt directly from the card**: Add an **Ask Agent About Remaining Items** button that uses `app.sendMessage()` to start a follow-up turn straight from the UI.
-3. **Build a Go environment card**: Start from `01-hello-world` and show `runtime.Version()`, `runtime.GOOS`, and `go.mod` dependencies inside a searchable inline table.
-4. **Scaffold a brand-new inline app**:
+3. **Build a Go environment card**: Ask `/mcp-app-development` to scaffold a small Go plugin showing `runtime.Version()`, `runtime.GOOS`, and `go.mod` dependencies inside a searchable inline table.
+4. **Scaffold a cron expression helper**:
    ```text
    /mcp-app-development Build an inline Go MCP App plugin that validates a cron expression, shows the next 5 run times, and lets me edit the expression live inside the card.
    ```
@@ -410,5 +358,3 @@ Keep these bookmarked when you need exact wire schemas, method signatures, or er
 9. **[SEP-1865 Formal Specification (`specification/2026-01-26/apps.mdx`)](https://github.com/modelcontextprotocol/ext-apps/blob/main/specification/2026-01-26/apps.mdx)** — The normative JSON-RPC 2.0 specification for every message, notification, capability flag, and display mode.
 10. **[`@modelcontextprotocol/ext-apps` API Reference](https://apps.extensions.modelcontextprotocol.io/api/)** (and **[Migrating to v2](https://github.com/modelcontextprotocol/ext-apps/blob/main/docs/migrate-to-2.md)**) — Complete frontend SDK reference for `App`, React hooks, theming helpers, and `downloadFile()`.
 11. **[MCP Go SDK (`pkg.go.dev/github.com/modelcontextprotocol/go-sdk/mcp`)](https://pkg.go.dev/github.com/modelcontextprotocol/go-sdk/mcp)** — Go API docs for `AddTool`, `AddResource`, `Meta`, `StructuredContent`, and transports.
-
-> **More examples in this repository:** If you want to explore side panels (`aux_pane`), full-page (`global`) views, and custom file viewers (`.archmap`) right away, the [companion GitHub repository](https://github.com/rominirani/antigravity-mcp-apps-guide) also includes an extended multi-surface guide ([`TUTORIAL.md`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/TUTORIAL.md)) with additional Python and TypeScript examples under [`examples/`](https://github.com/rominirani/antigravity-mcp-apps-guide/tree/main/examples).
