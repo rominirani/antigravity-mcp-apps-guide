@@ -4,8 +4,7 @@ node_modules/
 __pycache__/
 *.pyc
 
-# Local plugin test data, generated Medium HTML export & OS artifacts
+# Local plugin test data & OS artifacts
 .plugin-data/
 .verify-plugin-data/
-medium_export.html
 .DS_Store

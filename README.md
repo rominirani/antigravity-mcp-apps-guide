@@ -1,29 +1,34 @@
 # Building MCP Apps with `/mcp-app-development` in Google Antigravity
 
-Hands-on guides and runnable MCP App plugins covering the official [MCP Apps specification (SEP-1865 / `io.modelcontextprotocol/ui`)](https://github.com/modelcontextprotocol/ext-apps/blob/main/specification/2026-01-26/apps.mdx) and Google Antigravity's UI extensions (`com.google.antigravity/ui`).
+![MCP Apps in Google Antigravity — Overview Infographic](images/00_mcp_apps_hero_infographic.png)
 
-- **Start here (Go introductory guide):** **[`BLOG_POST.md`](./BLOG_POST.md)** — Introduces MCP Apps basics and walks through two inline Go + `//go:embed` examples under [`go-examples/`](./go-examples/).
-- **Extended multi-surface reference:** **[`TUTORIAL.md`](./TUTORIAL.md)** — Goes further into side panels (`aux_pane`), full-page (`global`) views, custom file viewers (`.archmap`), and companion skills using Python and TypeScript under [`examples/`](./examples/).
+Hands-on guides and runnable MCP App plugins for the [MCP Apps specification (SEP-1865)](https://github.com/modelcontextprotocol/ext-apps/blob/main/specification/2026-01-26/apps.mdx) and Google Antigravity.
+
+- **Start here (Go introductory guide):** **[`BLOG_POST.md`](./BLOG_POST.md)** — Introduces MCP Apps basics, scaffolding with `/mcp-app-development`, and two inline Go + `//go:embed` examples under [`go-examples/`](./go-examples/).
+- **Extended multi-surface guide:** **[`TUTORIAL.md`](./TUTORIAL.md)** — Covers side panels (`aux_pane`), full-page sidebar views (`global`), custom file viewers (`.archmap`), and companion skills using Python and TypeScript under [`examples/`](./examples/).
+
+## Prerequisites
+
+- **Google Antigravity App** (`v2.34.0+`) and the `agy` CLI
+- **Go** (`1.24+`) for the Go examples in [`go-examples/`](./go-examples/)
+- **Node.js** (`20+`) — used at build time to bundle the single-file UI into `dist/app.html` (not required at runtime for the compiled Go binaries), and for the Node/TypeScript examples
+- **Python** (`3.11+`) — only needed for [`examples/01-json-regex-visualizer/`](./examples/01-json-regex-visualizer/)
+
+## Quickstart: Go Examples (`BLOG_POST.md`)
+
+Both Go plugins use the official [`github.com/modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk), embed their bundled HTML UI with `//go:embed`, include Go tests, and pass `agy plugin validate --strict`:
+
+| # | Plugin | Stack | Surface | What It Demonstrates |
+| :-: | :--- | :--- | :--- | :--- |
+| **1** | [`go-examples/01-hello-world`](./go-examples/01-hello-world/) | Go (`go-sdk`) + `//go:embed` + Vanilla JS | **Inline in chat** | Single `say_hello` tool linked to a `ui://` view, text + structured output, host Light/Dark theming, and a live server callback button (`app.callServerTool()`) |
+| **2** | [`go-examples/02-quick-checklist`](./go-examples/02-quick-checklist/) | Go (`go-sdk`) + `//go:embed` + Vanilla JS | **Inline in chat** | UI-only tools (`visibility: ["app"]`), server-side persistence in `PLUGIN_DATA`, and attaching remaining items to your next prompt (`app.updateModelContext()`) |
+
+### Build, Test & Install Locally
 
 ```bash
 git clone https://github.com/rominirani/antigravity-mcp-apps-guide.git
 cd antigravity-mcp-apps-guide
-```
 
----
-
-## Go Examples (`BLOG_POST.md`)
-
-Both Go plugins use the official [`github.com/modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk) (`v1.8.0`), embed their single-file `esbuild` HTML UI with `//go:embed`, include Go client/server tests, and pass `agy plugin validate --strict`:
-
-| # | Plugin | Stack | Surface | Key Concepts |
-| :-: | :--- | :--- | :--- | :--- |
-| **1** | [`go-examples/01-hello-world`](./go-examples/01-hello-world/) | Go (`go-sdk` v1.8.0) + `//go:embed` + Vanilla JS | **Inline in chat** | 1 tool (`say_hello`) + 1 `ui://` resource, `Content` vs. `StructuredContent`, host theming, live `app.callServerTool()` callback |
-| **2** | [`go-examples/02-quick-checklist`](./go-examples/02-quick-checklist/) | Go (`go-sdk` v1.8.0) + `//go:embed` + Vanilla JS | **Inline in chat** | App-only tools (`visibility: ["app"]`), eager persistence in `${PLUGIN_DATA}/checklists.json`, prompt context pills via `app.updateModelContext()` |
-
-### Build, Test & Install the Go Plugins
-
-```bash
 # Example 1: Hello World
 cd go-examples/01-hello-world
 npm --prefix ui install && npm --prefix ui run build   # build-time only: creates dist/app.html
@@ -41,50 +46,39 @@ agy plugin validate --strict .
 agy plugin install .
 ```
 
----
-
 ## Extended Python & TypeScript Examples (`TUTORIAL.md`)
 
-Every plugin in `examples/` also passes `agy plugin validate --strict`:
+Every plugin in [`examples/`](./examples/) includes its own `README.md`, verification script, and passes `agy plugin validate --strict`:
 
-| # | Plugin | Stack | Antigravity Surfaces | Key Concepts |
+| # | Plugin | Stack | Antigravity Surfaces | What It Demonstrates |
 | :-: | :--- | :--- | :--- | :--- |
-| **0** | [`examples/00-hello-world`](./examples/00-hello-world/) | Plain Node.js ESM + Vanilla JS + `esbuild` | **Inline in chat** | Minimal Node.js starter (`say_hello`) |
-| **1** | [`examples/01-json-regex-visualizer`](./examples/01-json-regex-visualizer/) | Python (`mcp` v2 `MCPServer`) + Vanilla JS + `esbuild` | **Inline in chat** | Shared `ui://` resource across tools, safe DOM tree & regex highlighting, app-only live Python regex re-evaluation |
-| **2** | [`examples/02-sqlite-csv-explorer`](./examples/02-sqlite-csv-explorer/) | TypeScript (`@modelcontextprotocol/server` v2) + React 19 + Vite + `sql.js` | **Side Panel (`aux_pane`)** + **Full Page (`global`)** | Empty `{}` default view, read-only SQLite/CSV guardrails, paginated app-only queries, 4-in-flight guard, `updateModelContext`, `sendMessage`, capability gating |
-| **3** | [`examples/03-repo-architecture-reviewer`](./examples/03-repo-architecture-reviewer/) | TypeScript + React 19 + Vite (dual single-file bundles) + Skill | **Side Panel (`aux_pane`)** + **Full Page (`global`)** + **Custom File Viewer (`file`)** | Dependency graph, `com.google.antigravity/toggle-aux-pane`, background chats (`target: "new"`), `.archmap` file reader/writer (`antigravity-file://`), companion `/repo-review` skill |
-
----
+| **0** | [`examples/00-hello-world`](./examples/00-hello-world/) | Node.js ESM + Vanilla JS + `esbuild` | **Inline in chat** | Minimal Node.js starter (`say_hello`) |
+| **1** | [`examples/01-json-regex-visualizer`](./examples/01-json-regex-visualizer/) | Python (`mcp` v2) + Vanilla JS + `esbuild` | **Inline in chat** | Shared `ui://` resource across tools, JSON tree & regex highlighting, live app-only Python regex re-evaluation |
+| **2** | [`examples/02-sqlite-csv-explorer`](./examples/02-sqlite-csv-explorer/) | TypeScript + React 19 + Vite + `sql.js` | **Side Panel (`aux_pane`)** + **Full Page (`global`)** | Read-only SQLite/CSV explorer, paginated app-only queries, `updateModelContext`, `sendMessage`, capability gating |
+| **3** | [`examples/03-repo-architecture-reviewer`](./examples/03-repo-architecture-reviewer/) | TypeScript + React 19 + Vite + Skill | **Side Panel (`aux_pane`)** + **Full Page (`global`)** + **Custom File Viewer (`file`)** | Dependency graph, opening workspace files, background chats, `.archmap` custom file viewer, companion `/repo-review` skill |
 
 ## Repository Structure
 
 ```text
 antigravity-mcp-apps-guide/
-├── BLOG_POST.md                               # Standalone introductory guide (Go)
-├── TUTORIAL.md                                # Extended multi-surface guide (Python & TypeScript)
-├── README.md                                  # Quickstart & repository map
-├── generate_medium_html.py                    # Converts BLOG_POST.md into Medium-ready HTML
-├── social_posts.md                            # LinkedIn and X/Twitter drafts
-├── images/                                    # 2x PNG diagrams and SVG sources
+├── BLOG_POST.md                          # Introductory guide (Go + /mcp-app-development)
+├── TUTORIAL.md                           # Extended multi-surface guide (Python & TypeScript)
+├── README.md                             # Quickstart & repository map
+├── images/                               # Overview infographic, PNG diagrams, and SVG sources
 ├── go-examples/
-│   ├── 01-hello-world/                        # Go + //go:embed Hello World inline plugin
-│   └── 02-quick-checklist/                    # Go + //go:embed Quick Checklist inline plugin
+│   ├── 01-hello-world/                   # Go + //go:embed Hello World inline plugin
+│   └── 02-quick-checklist/               # Go + //go:embed Quick Checklist inline plugin
 └── examples/
-    ├── 00-hello-world/                        # Plain Node.js ESM Hello World inline plugin
-    ├── 01-json-regex-visualizer/              # Python + Vanilla JS inline plugin
-    ├── 02-sqlite-csv-explorer/                # TypeScript + React Side Panel & Global plugin
-    └── 03-repo-architecture-reviewer/         # TypeScript + React + Custom File Viewer + Skill
+    ├── 00-hello-world/                   # Node.js ESM Hello World inline plugin
+    ├── 01-json-regex-visualizer/         # Python + Vanilla JS inline plugin
+    ├── 02-sqlite-csv-explorer/           # TypeScript + React Side Panel & Full Page plugin
+    └── 03-repo-architecture-reviewer/    # TypeScript + React + Custom File Viewer + Skill
 ```
 
----
+## Official Documentation
 
-## Medium Export Helper
-
-Generate a Medium-ready HTML file with GitHub raw diagram URLs and a 1-click copy toolbar:
-
-```bash
-python3 generate_medium_html.py \
-  --github-raw-base https://raw.githubusercontent.com/rominirani/antigravity-mcp-apps-guide/main
-```
-
-Open `medium_export.html` (gitignored) in a browser, click **Copy Article for Medium**, and paste into `https://medium.com/new-story`.
+- [MCP Apps Overview (`modelcontextprotocol.io`)](https://modelcontextprotocol.io/extensions/apps/overview)
+- [MCP Apps Specification — SEP-1865 (`modelcontextprotocol/ext-apps`)](https://github.com/modelcontextprotocol/ext-apps/blob/main/specification/2026-01-26/apps.mdx)
+- [Google Antigravity — MCP Apps](https://antigravity.google/docs/mcp-apps)
+- [Google Antigravity — `/mcp-app-development`](https://antigravity.google/docs/commands/mcp-app-development)
+- [Google Antigravity — Build Plugins](https://antigravity.google/docs/build-plugins)
