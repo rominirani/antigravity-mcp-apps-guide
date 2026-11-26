@@ -141,165 +141,58 @@ go-examples/01-hello-world/
 └── assets/logo.svg       # Plugin icon
 ```
 
-### Step 2: Inspect the Generated Go Server (`main.go`)
+### Step 2: What to Look For in `main.go`
 
-Once `/mcp-app-development` finishes scaffolding, open `main.go` to see how the server wires the `ui://` resource and tool together. Here is the core of [`go-examples/01-hello-world/main.go`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/01-hello-world/main.go):
+You don't need to write the boilerplate from scratch—just open the generated `main.go` (full file: [`go-examples/01-hello-world/main.go`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/01-hello-world/main.go)) and verify the three MCP Apps wiring points:
 
 ```go
-package main
-
-import (
-	"context"
-	_ "embed"
-	"fmt"
-	"log"
-	"os"
-	"path/filepath"
-	"strings"
-	"sync/atomic"
-	"time"
-
-	"github.com/modelcontextprotocol/go-sdk/mcp"
-)
-
-const (
-	appURI      = "ui://hello-world/app.html"
-	appMIMEType = "text/html;profile=mcp-app"
-)
-
 //go:embed dist/app.html
 var embeddedAppHTML string
 
-type HelloInput struct {
-	Name string `json:"name,omitempty" jsonschema:"Name of the person to greet (defaults to Developer)"`
-}
-
-type HelloOutput struct {
-	Name       string `json:"name"`
-	Greeting   string `json:"greeting"`
-	ServerTime string `json:"serverTime"`
-	PingCount  int64  `json:"pingCount"`
-}
-```
-
-Inside `newHelloServer()`, we register the UI resource first and then register `say_hello` pointing at `appURI`:
-
-```go
-// 1. Register the self-contained HTML UI as a ui:// resource.
+// 1. Serve the bundled HTML as a ui:// resource with the MCP App MIME type.
 server.AddResource(&mcp.Resource{
-	URI:         appURI,
-	Name:        "Hello World Card",
-	Description: "Minimal inline greeting and server clock MCP App.",
-	MIMEType:    appMIMEType,
-	Meta:        mcp.Meta{"ui": map[string]any{"prefersBorder": true}},
-}, func(ctx context.Context, req *mcp.ReadResourceRequest) (*mcp.ReadResourceResult, error) {
-	html, err := loadAppHTML() // Reads HELLO_APP_HTML if set, otherwise embeddedAppHTML
-	if err != nil {
-		return nil, err
-	}
-	return &mcp.ReadResourceResult{
-		Contents: []*mcp.ResourceContents{
-			{
-				URI:      appURI,
-				MIMEType: appMIMEType,
-				Text:     html,
-				Meta:     mcp.Meta{"ui": map[string]any{"prefersBorder": true}},
-			},
-		},
-	}, nil
-})
+	URI:      "ui://hello-world/app.html",
+	MIMEType: "text/html;profile=mcp-app",
+}, readAppHTMLHandler)
 
-// 2. Register one tool linked to the UI resource via _meta.ui.resourceUri.
+// 2. Link say_hello to that resource via _meta.ui.resourceUri.
 mcp.AddTool(server, &mcp.Tool{
-	Name:        "say_hello",
-	Title:       "Say Hello",
-	Description: "Greet someone by name and render an interactive inline greeting card with a live server clock.",
-	Meta: mcp.Meta{
-		"ui": map[string]any{"resourceUri": appURI},
-	},
-}, func(ctx context.Context, req *mcp.CallToolRequest, input HelloInput) (*mcp.CallToolResult, HelloOutput, error) {
-	name := strings.TrimSpace(input.Name)
-	if name == "" {
-		name = "Developer"
-	}
-	count := pingCount.Add(1)
-	now := time.Now().UTC().Format(time.RFC3339Nano)
-	greeting := fmt.Sprintf("Hello, %s!", name)
-
+	Name: "say_hello",
+	Meta: mcp.Meta{"ui": map[string]any{"resourceUri": "ui://hello-world/app.html"}},
+}, func(ctx context.Context, req *mcp.CallToolRequest, in HelloInput) (*mcp.CallToolResult, HelloOutput, error) {
 	out := HelloOutput{Name: name, Greeting: greeting, ServerTime: now, PingCount: count}
-	result := &mcp.CallToolResult{
-		Content: []mcp.Content{
-			&mcp.TextContent{Text: fmt.Sprintf("%s (Server time: %s, call #%d)", greeting, now, count)},
-		},
-	}
-	return result, out, nil
+	res := &mcp.CallToolResult{Content: []mcp.Content{&mcp.TextContent{Text: summary}}}
+	return res, out, nil // Go SDK marshals `out` into structuredContent automatically
 })
 ```
 
-Notice how `mcp.AddTool` handles both outputs cleanly: the `CallToolResult.Content` slice provides plain text for the LLM and CLI clients, while the returned `HelloOutput` struct is marshaled automatically into `structuredContent` for the iframe.
+`CallToolResult.Content` provides the short plain-text fallback for the LLM and CLI clients, while the returned `HelloOutput` struct becomes `structuredContent` for the iframe.
 
-### Step 3: Inspect the Generated Frontend (`ui/app.js`)
+### Step 3: What to Look For in `ui/app.js`
 
-Next, look at the generated client script in [`go-examples/01-hello-world/ui/app.js`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/01-hello-world/ui/app.js):
+Similarly, in the generated frontend (full file: [`go-examples/01-hello-world/ui/app.js`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/01-hello-world/ui/app.js)), the only MCP Apps–specific logic is connecting the `App` bridge in the right order:
 
 ```js
-import {
-  App,
-  applyDocumentTheme,
-  applyHostStyleVariables,
-} from "@modelcontextprotocol/ext-apps";
+import { App, applyDocumentTheme, applyHostStyleVariables } from "@modelcontextprotocol/ext-apps";
 
-const greetingEl = document.getElementById("greeting");
-const metaEl = document.getElementById("meta");
-const refreshBtn = document.getElementById("refresh-btn");
-
-let currentName = "Developer";
 const app = new App({ name: "Hello MCP App", version: "1.0.0" }, {});
 
-function applyTheme(ctx) {
-  if (!ctx) return;
-  if (ctx.theme) applyDocumentTheme(ctx.theme);
-  if (ctx.styles?.variables) applyHostStyleVariables(ctx.styles.variables);
-}
-
-function render(data) {
-  if (!data) return;
-  currentName = data.name || currentName;
-  greetingEl.textContent = data.greeting || `Hello, ${currentName}!`;
-  metaEl.textContent = `Server time: ${data.serverTime} · Server call #${data.pingCount}`;
-}
-
 // 1. Register handlers BEFORE calling app.connect().
-app.ontoolinput = ({ arguments: args }) => {
-  if (args?.name) currentName = String(args.name);
-  greetingEl.textContent = `Saying hello to ${currentName}...`;
-};
 app.ontoolresult = (result) => render(result?.structuredContent);
 app.onhostcontextchanged = applyTheme;
 
-// 2. Call back into the Go server directly from the iframe.
+// 2. Call back into the Go server directly on button click.
 refreshBtn.addEventListener("click", async () => {
-  refreshBtn.disabled = true;
-  try {
-    const result = await app.callServerTool({
-      name: "say_hello",
-      arguments: { name: currentName },
-    });
-    render(result?.structuredContent);
-  } finally {
-    refreshBtn.disabled = false;
-  }
+  const result = await app.callServerTool({ name: "say_hello", arguments: { name: currentName } });
+  render(result?.structuredContent);
 });
 
-// 3. Complete handshake, sync initial theme, and gate optional button.
+// 3. Complete the handshake and sync the host's light/dark theme.
 await app.connect();
 applyTheme(app.getHostContext());
-if (!app.getHostCapabilities()?.serverTools) {
-  refreshBtn.hidden = true;
-}
 ```
 
-Notice we use `textContent` rather than `innerHTML` so user-supplied values (like `name`) are never interpreted as HTML. [`ui/build.mjs`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/01-hello-world/ui/build.mjs) bundles `ui/app.js` and `@modelcontextprotocol/ext-apps` with `esbuild` and writes the single self-contained HTML file to `dist/app.html`, which Go embeds at compile time.
+In the full file, `render()` writes values with `textContent` (never `innerHTML`), hides the refresh button if `app.getHostCapabilities()?.serverTools` is absent, and [`ui/build.mjs`](https://github.com/rominirani/antigravity-mcp-apps-guide/blob/main/go-examples/01-hello-world/ui/build.mjs) uses `esbuild` to bundle everything into `dist/app.html`.
 
 ### Step 4: Build, Test & Try It in Antigravity
 
