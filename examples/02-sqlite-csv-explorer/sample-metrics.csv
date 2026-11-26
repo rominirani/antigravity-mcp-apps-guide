@@ -1,0 +1,9 @@
+timestamp,service,region,requests,error_rate,p95_ms
+2026-11-24T08:00:00Z,auth-gateway,us-east1,18420,0.002,28.4
+2026-11-24T08:15:00Z,checkout-api,us-east1,9120,0.011,142.8
+2026-11-24T08:30:00Z,search-index,eu-west1,24110,0.004,64.1
+2026-11-24T08:45:00Z,checkout-api,eu-west1,8840,0.038,318.5
+2026-11-24T09:00:00Z,billing-worker,us-central1,4310,0.001,91.0
+2026-11-24T09:15:00Z,auth-gateway,eu-west1,16900,0.003,31.2
+2026-11-24T09:30:00Z,checkout-api,us-east1,10540,0.049,412.9
+2026-11-24T09:45:00Z,search-index,us-east1,27450,0.006,71.6

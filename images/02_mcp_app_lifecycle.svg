@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 546" width="960" height="546" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr-solid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#1e293b"/>
+    </marker>
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0f766e"/>
+    </marker>
+    <marker id="arr-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="546" rx="14" fill="#f8fafc"/>
+  <text x="480" y="34" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">MCP App Lifecycle in Three Stages</text>
+
+  <!-- Lifelines -->
+  <line x1="130" y1="92" x2="130" y2="520" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="365" y1="92" x2="365" y2="520" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="600" y1="92" x2="600" y2="520" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="835" y1="92" x2="835" y2="520" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5"/>
+
+  <!-- Participant Headers -->
+  <rect x="52" y="54" width="156" height="38" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="130" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">LLM Agent</text>
+
+  <rect x="280" y="54" width="170" height="38" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="365" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">Antigravity Host</text>
+
+  <rect x="515" y="54" width="170" height="38" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="600" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="#155e75">Go MCP Server</text>
+
+  <rect x="757" y="54" width="156" height="38" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="835" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">UI Iframe</text>
+
+  <!-- Stage 1 Band -->
+  <rect x="34" y="108" width="892" height="196" rx="10" fill="#eff6ff" fill-opacity="0.45" stroke="#bfdbfe" stroke-width="1.2"/>
+  <rect x="46" y="116" width="210" height="24" rx="12" fill="#2563eb"/>
+  <text x="151" y="132" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">1. Run Tool &amp; Render UI</text>
+
+  <!-- 1a: M -> H -->
+  <line x1="130" y1="162" x2="358" y2="162" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-blue)"/>
+  <text x="247" y="155" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">Call tool (e.g. say_hello)</text>
+
+  <!-- 1b: H -> S -->
+  <line x1="365" y1="188" x2="593" y2="188" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-blue)"/>
+  <text x="482" y="181" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">Run tool &amp; read ui:// HTML</text>
+
+  <!-- 1c: S -> H -->
+  <line x1="600" y1="214" x2="372" y2="214" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arr-blue)"/>
+  <text x="482" y="207" text-anchor="middle" font-size="12" fill="#334155">HTML bundle + CallToolResult</text>
+
+  <!-- 1d: H -> V -->
+  <line x1="365" y1="242" x2="828" y2="242" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-blue)"/>
+  <text x="600" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">Mount iframe &amp; handshake (ui/initialize)</text>
+
+  <!-- 1e: H -> V -->
+  <line x1="365" y1="268" x2="828" y2="268" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arr-blue)"/>
+  <text x="600" y="261" text-anchor="middle" font-size="12" fill="#334155">Deliver tool input &amp; structuredContent</text>
+
+  <!-- 1f: H -> M -->
+  <line x1="365" y1="292" x2="137" y2="292" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arr-blue)"/>
+  <text x="247" y="285" text-anchor="middle" font-size="12" fill="#334155">Return plain-text content</text>
+
+  <!-- Stage 2 Band -->
+  <rect x="34" y="318" width="892" height="118" rx="10" fill="#ecfdf5" fill-opacity="0.65" stroke="#a7f3d0" stroke-width="1.2"/>
+  <rect x="46" y="326" width="292" height="24" rx="12" fill="#0f766e"/>
+  <text x="192" y="342" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">2. User Interacts (No LLM Turn Needed)</text>
+
+  <line x1="835" y1="370" x2="372" y2="370" stroke="#0f766e" stroke-width="2" marker-end="url(#arr-teal)"/>
+  <text x="600" y="363" text-anchor="middle" font-size="12" font-weight="600" fill="#134e4a">app.callServerTool()</text>
+
+  <line x1="365" y1="396" x2="593" y2="396" stroke="#0f766e" stroke-width="2" marker-end="url(#arr-teal)"/>
+  <text x="482" y="389" text-anchor="middle" font-size="11.5" fill="#115e59">Forward tools/call</text>
+
+  <line x1="600" y1="422" x2="828" y2="422" stroke="#0f766e" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arr-teal)"/>
+  <text x="717" y="415" text-anchor="middle" font-size="11.5" fill="#115e59">Fresh data (proxied via Host)</text>
+
+  <!-- Stage 3 Band -->
+  <rect x="34" y="448" width="892" height="82" rx="10" fill="#f5f3ff" fill-opacity="0.65" stroke="#ddd6fe" stroke-width="1.2"/>
+  <rect x="46" y="456" width="248" height="24" rx="12" fill="#7c3aed"/>
+  <text x="170" y="472" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">3. Talk Back to Agent (Optional)</text>
+
+  <line x1="835" y1="498" x2="372" y2="498" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr-purple)"/>
+  <text x="600" y="491" text-anchor="middle" font-size="12" font-weight="600" fill="#4c1d95">updateModelContext() or sendMessage()</text>
+
+  <line x1="365" y1="518" x2="137" y2="518" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arr-purple)"/>
+  <text x="247" y="511" text-anchor="middle" font-size="11.5" fill="#5b21b6">Context pill / new user turn</text>
+</svg>

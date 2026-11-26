@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="SQLite and CSV Explorer">
+  <rect x="14" y="14" width="100" height="100" rx="22" fill="#0F766E" />
+  <ellipse cx="64" cy="40" rx="28" ry="10" fill="#CCFBF1" />
+  <path d="M36 40v24c0 5.5 12.5 10 28 10s28-4.5 28-10V40" fill="none" stroke="#CCFBF1" stroke-width="6" />
+  <path d="M36 64v22c0 5.5 12.5 10 28 10s28-4.5 28-10V64" fill="none" stroke="#99F6E4" stroke-width="6" />
+</svg>

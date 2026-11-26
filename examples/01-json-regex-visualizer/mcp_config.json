@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "visualizer": {
+      "command": "bash",
+      "args": ["${PLUGIN_ROOT}/scripts/run-server.sh"]
+    }
+  }
+}

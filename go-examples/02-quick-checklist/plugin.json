@@ -1,0 +1,19 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "quick-checklist-go",
+  "displayName": "Quick Checklist (Go)",
+  "version": "1.0.0",
+  "description": "Interactive inline Go MCP App checklist with app-only toggles, persistent storage in PLUGIN_DATA, and prompt context attachment.",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "Create a PR review checklist for this repository using create_checklist",
+    "Create a release preflight checklist with 5 steps inline",
+    "Make a quick debugging checklist for tracking down a flaky test"
+  ],
+  "author": {
+    "name": "MCP App Development Guide",
+    "url": "https://modelcontextprotocol.io/extensions/apps/overview"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["go", "checklist", "tasks", "mcp-app", "inline"]
+}

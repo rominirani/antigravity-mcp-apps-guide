@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "checklist": {
+      "command": "env",
+      "args": ["${PLUGIN_ROOT}/scripts/checklist-server"]
+    }
+  }
+}

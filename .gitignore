@@ -1,0 +1,11 @@
+# Dependencies & virtual environments
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# Local plugin test data, generated Medium HTML export & OS artifacts
+.plugin-data/
+.verify-plugin-data/
+medium_export.html
+.DS_Store

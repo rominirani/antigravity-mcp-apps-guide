@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "project": "Checkout Platform",
+  "updatedAt": "2026-11-25T00:00:00Z",
+  "nodes": [
+    { "id": "gateway", "label": "API Gateway", "layer": "edge", "status": "healthy", "owner": "platform" },
+    { "id": "auth", "label": "Auth Service", "layer": "core", "status": "healthy", "owner": "identity" },
+    { "id": "checkout", "label": "Checkout API", "layer": "core", "status": "warning", "owner": "commerce" },
+    { "id": "billing", "label": "Billing Worker", "layer": "async", "status": "healthy", "owner": "payments" },
+    { "id": "postgres", "label": "Orders DB", "layer": "data", "status": "healthy", "owner": "data-infra" }
+  ],
+  "edges": [
+    { "from": "gateway", "to": "auth", "protocol": "gRPC" },
+    { "from": "gateway", "to": "checkout", "protocol": "HTTP/2" },
+    { "from": "checkout", "to": "billing", "protocol": "Pub/Sub" },
+    { "from": "checkout", "to": "postgres", "protocol": "TCP/TLS" },
+    { "from": "billing", "to": "postgres", "protocol": "TCP/TLS" }
+  ]
+}

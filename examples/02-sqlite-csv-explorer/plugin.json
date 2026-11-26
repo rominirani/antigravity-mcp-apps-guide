@@ -1,0 +1,19 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "sqlite-csv-explorer",
+  "displayName": "SQLite & CSV Explorer",
+  "version": "1.0.0",
+  "description": "Interactive read-only SQLite and CSV data explorer with side panel and full-page views, paginated app-only queries, and model context attachment.",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "Open the SQLite & CSV Explorer side pane and show top services by p95 latency",
+    "Explore sample-metrics.csv in the SQLite & CSV Explorer and find error spikes",
+    "Run a query grouping incidents by severity in the SQLite & CSV Explorer"
+  ],
+  "author": {
+    "name": "MCP App Development Tutorial",
+    "url": "https://modelcontextprotocol.io/extensions/apps/overview"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["sqlite", "csv", "sql", "data-explorer", "mcp-app"]
+}

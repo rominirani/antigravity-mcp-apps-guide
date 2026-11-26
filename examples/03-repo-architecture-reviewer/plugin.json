@@ -1,0 +1,19 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "repo-architecture-reviewer",
+  "displayName": "Repo Architecture Reviewer",
+  "version": "1.0.0",
+  "description": "Interactive repository dependency graph, file complexity reviewer, and .archmap visual editor using Antigravity native MCP App extensions.",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "Scan this repository with scan_repository and highlight the highest-coupling modules",
+    "Review the architecture of examples/02-sqlite-csv-explorer and open its core server file",
+    "Run /repo-review to audit this workspace's module boundaries and complexity hotspots"
+  ],
+  "author": {
+    "name": "MCP App Development Tutorial",
+    "url": "https://modelcontextprotocol.io/extensions/apps/overview"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["architecture", "code-review", "dependency-graph", "mcp-app", "file-viewer"]
+}

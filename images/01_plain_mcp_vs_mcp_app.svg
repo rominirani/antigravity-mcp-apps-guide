@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="400" rx="14" fill="#f8fafc"/>
+  <text x="480" y="38" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Plain MCP Tool vs. MCP App (SEP-1865)</text>
+
+  <!-- Left Panel: Plain MCP Tool -->
+  <rect x="28" y="60" width="424" height="312" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="28" y="60" width="424" height="42" rx="12" fill="#f1f5f9"/>
+  <rect x="28" y="90" width="424" height="12" fill="#f1f5f9"/>
+  <text x="240" y="87" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">Plain MCP Tool (Text Only)</text>
+
+  <rect x="130" y="122" width="220" height="44" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="240" y="149" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">User in Chat</text>
+
+  <rect x="130" y="206" width="220" height="44" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="240" y="233" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">LLM Agent</text>
+
+  <rect x="130" y="294" width="220" height="48" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="240" y="316" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">MCP Server</text>
+  <text x="240" y="333" text-anchor="middle" font-size="11" fill="#64748b">Returns plain text / JSON</text>
+
+  <!-- Left Arrows -->
+  <line x1="185" y1="166" x2="185" y2="202" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+  <text x="174" y="189" text-anchor="end" font-size="11" fill="#475569">Prompt</text>
+
+  <line x1="295" y1="206" x2="295" y2="170" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+  <text x="306" y="185" text-anchor="start" font-size="11" fill="#475569">Text reply</text>
+  <text x="306" y="198" text-anchor="start" font-size="10" fill="#94a3b8">(new turn per click)</text>
+
+  <line x1="185" y1="250" x2="185" y2="290" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+  <text x="174" y="275" text-anchor="end" font-size="11" fill="#475569">tools/call</text>
+
+  <line x1="295" y1="294" x2="295" y2="254" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+  <text x="306" y="275" text-anchor="start" font-size="11" fill="#475569">Raw JSON / text</text>
+
+  <!-- Right Panel: MCP App -->
+  <rect x="480" y="60" width="452" height="312" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <rect x="480" y="60" width="452" height="42" rx="12" fill="#eff6ff"/>
+  <rect x="480" y="90" width="452" height="12" fill="#eff6ff"/>
+  <text x="706" y="87" text-anchor="middle" font-size="15" font-weight="700" fill="#1d4ed8">MCP App (SEP-1865 in Antigravity)</text>
+
+  <!-- User + Iframe -->
+  <rect x="504" y="122" width="176" height="54" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="592" y="145" text-anchor="middle" font-size="13" font-weight="600" fill="#166534">User Interacts</text>
+  <text x="592" y="163" text-anchor="middle" font-size="11" fill="#15803d">Click, toggle, attach context</text>
+
+  <rect x="726" y="122" width="184" height="54" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="818" y="145" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">Sandboxed UI Iframe</text>
+  <text x="818" y="163" text-anchor="middle" font-size="11" font-family="ui-monospace, Menlo, monospace" fill="#2563eb">ui://... (CSP isolated)</text>
+
+  <!-- Host -->
+  <rect x="590" y="212" width="232" height="46" rx="8" fill="#f8fafc" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="706" y="233" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">Antigravity Host</text>
+  <text x="706" y="249" text-anchor="middle" font-size="11" fill="#475569">postMessage JSON-RPC bridge</text>
+
+  <!-- Server + LLM -->
+  <rect x="504" y="294" width="184" height="52" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="596" y="317" text-anchor="middle" font-size="13" font-weight="600" fill="#155e75">Go MCP Server</text>
+  <text x="596" y="334" text-anchor="middle" font-size="11" fill="#0e7490">tools/call &amp; resources/read</text>
+
+  <rect x="726" y="294" width="184" height="52" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="818" y="317" text-anchor="middle" font-size="13" font-weight="600" fill="#5b21b6">LLM Agent</text>
+  <text x="818" y="334" text-anchor="middle" font-size="11" fill="#6d28d9">Concise text + context pills</text>
+
+  <!-- Right Arrows -->
+  <line x1="680" y1="149" x2="722" y2="149" stroke="#0f766e" stroke-width="2" marker-start="url(#arrow-teal)" marker-end="url(#arrow-teal)"/>
+  <line x1="780" y1="176" x2="748" y2="209" stroke="#2563eb" stroke-width="2" marker-start="url(#arrow-blue)" marker-end="url(#arrow-blue)"/>
+  <line x1="664" y1="258" x2="622" y2="291" stroke="#0f766e" stroke-width="2" marker-start="url(#arrow-teal)" marker-end="url(#arrow-teal)"/>
+  <line x1="748" y1="258" x2="790" y2="291" stroke="#2563eb" stroke-width="2" marker-start="url(#arrow-blue)" marker-end="url(#arrow-blue)"/>
+</svg>

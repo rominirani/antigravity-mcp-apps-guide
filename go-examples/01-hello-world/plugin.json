@@ -1,0 +1,19 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "hello-mcp-app-go",
+  "displayName": "Hello MCP App (Go)",
+  "version": "1.0.0",
+  "description": "Minimal Go MCP App demonstrating a single embedded ui:// resource, inline rendering, host theming, and live server tool callbacks.",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "Greet Ada using the say_hello tool",
+    "Call say_hello and show me the inline greeting card",
+    "Test say_hello and ping the Go server for a fresh timestamp"
+  ],
+  "author": {
+    "name": "MCP App Development Guide",
+    "url": "https://modelcontextprotocol.io/extensions/apps/overview"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["go", "hello-world", "starter", "mcp-app", "inline"]
+}

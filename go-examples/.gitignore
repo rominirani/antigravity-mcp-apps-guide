@@ -1,0 +1,4 @@
+# Compiled Go server binaries (rebuild with `go build -o scripts/... .`)
+*/scripts/*-server
+*/ui/node_modules/
+*/.plugin-data/

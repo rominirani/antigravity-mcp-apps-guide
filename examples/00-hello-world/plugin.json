@@ -1,0 +1,19 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "hello-mcp-app",
+  "displayName": "Hello MCP App",
+  "version": "1.0.0",
+  "description": "Minimal Hello World MCP App demonstrating a single ui:// resource, inline rendering, host theming, and live server tool callbacks.",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "Greet Ada using the say_hello MCP App tool",
+    "Call say_hello and show me the interactive greeting card inline",
+    "Test the Hello MCP App card and ping the server for a fresh timestamp"
+  ],
+  "author": {
+    "name": "MCP App Development Tutorial",
+    "url": "https://modelcontextprotocol.io/extensions/apps/overview"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["hello-world", "starter", "mcp-app", "inline"]
+}

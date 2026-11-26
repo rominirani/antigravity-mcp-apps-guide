@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "hello": {
+      "command": "env",
+      "args": ["${PLUGIN_ROOT}/scripts/hello-server"]
+    }
+  }
+}

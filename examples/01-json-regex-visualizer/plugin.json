@@ -1,0 +1,19 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "json-regex-visualizer",
+  "displayName": "JSON & Regex Visualizer",
+  "version": "1.0.0",
+  "description": "Interactive inline JSON tree explorer and Python regex match visualizer rendered directly inside Antigravity conversations.",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "Visualize this API response JSON with inspect_json so I can search keys and copy JSONPaths",
+    "Test a Python regex for ISO-8601 timestamps against sample application log lines",
+    "Inspect package.json from this workspace using the inline JSON visualizer"
+  ],
+  "author": {
+    "name": "MCP App Development Tutorial",
+    "url": "https://modelcontextprotocol.io/extensions/apps/overview"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["json", "regex", "visualizer", "mcp-app", "python"]
+}
