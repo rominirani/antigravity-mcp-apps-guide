@@ -26,7 +26,7 @@ Both Go plugins use the official [`github.com/modelcontextprotocol/go-sdk`](http
 ```bash
 # Example 1: Hello World
 cd go-examples/01-hello-world
-(cd ui && npm install && npm run build)
+npm --prefix ui install && npm --prefix ui run build   # build-time only: creates dist/app.html
 go test -v ./...
 mkdir -p scripts && go build -o scripts/hello-server .
 agy plugin validate --strict .
@@ -34,7 +34,7 @@ agy plugin install .
 
 # Example 2: Quick Checklist
 cd ../02-quick-checklist
-(cd ui && npm install && npm run build)
+npm --prefix ui install && npm --prefix ui run build   # build-time only: creates dist/app.html
 go test -v ./...
 mkdir -p scripts && go build -o scripts/checklist-server .
 agy plugin validate --strict .

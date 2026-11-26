@@ -303,14 +303,21 @@ Notice we use `textContent` rather than `innerHTML` so user-supplied values (lik
 
 ### Step 4: Build, Test & Try It in Antigravity
 
-If you cloned the companion repo (or want to verify the scaffolded project manually), run:
+Because the iframe UI runs in the browser and imports `@modelcontextprotocol/ext-apps` from npm, `npm` is used once at **build time** to bundle `ui/app.js` and its CSS into `dist/app.html`. Once `go build` embeds that file into `scripts/hello-server`, Node.js is no longer needed at runtime.
 
 ```bash
 cd go-examples/01-hello-world
-(cd ui && npm install && npm run build)
+
+# 1. Build-time only: bundle ui/app.js + @modelcontextprotocol/ext-apps into dist/app.html
+npm --prefix ui install
+npm --prefix ui run build
+
+# 2. Test and compile the standalone Go binary (embeds dist/app.html)
 go mod tidy
 go test -v ./...
 mkdir -p scripts && go build -o scripts/hello-server .
+
+# 3. Validate and install the Antigravity plugin
 agy plugin validate --strict .
 agy plugin install .
 ```
@@ -437,10 +444,17 @@ if (!caps?.updateModelContext) {
 
 ```bash
 cd go-examples/02-quick-checklist
-(cd ui && npm install && npm run build)
+
+# 1. Build-time only: bundle the frontend UI into dist/app.html
+npm --prefix ui install
+npm --prefix ui run build
+
+# 2. Test and compile the standalone Go binary (embeds dist/app.html)
 go mod tidy
 go test -v ./...
 mkdir -p scripts && go build -o scripts/checklist-server .
+
+# 3. Validate and install the Antigravity plugin
 agy plugin validate --strict .
 agy plugin install .
 ```
@@ -518,7 +532,7 @@ agy plugin install ./go-examples/02-quick-checklist
 
 ### Fast Iteration Loop
 
-- **Editing HTML/JS/CSS**: Re-run `(cd ui && npm run build)` and point `HELLO_APP_HTML` or `CHECKLIST_APP_HTML` at `dist/app.html` while iterating. Closing and reopening the view fetches the updated HTML immediately without recompiling Go or restarting the server.
+- **Editing HTML/JS/CSS**: Re-run `npm --prefix ui run build` and point `HELLO_APP_HTML` or `CHECKLIST_APP_HTML` at `dist/app.html` while iterating. Closing and reopening the view fetches the updated HTML immediately without recompiling Go or restarting the server.
 - **Editing Go server code**: Recompile (`go build -o scripts/hello-server .`), then restart the server either from **Customizations > Installed > \<plugin\> > MCP > More actions (`⋮`) > Restart**, or from an Antigravity terminal using the Language Server RPC (plugin servers are namespaced `<plugin-name>_<server-key>`):
 
 ```bash
