@@ -7,6 +7,9 @@ Suggested Titles:
 
 # Getting Started with MCP Apps and `/mcp-app-development` in Google Antigravity
 
+![MCP Apps in Google Antigravity — Overview Infographic](images/00_mcp_apps_hero_infographic.png)
+*MCP Apps in Google Antigravity at a glance: how tools pair with ui:// views, what /mcp-app-development scaffolds, the two Go examples in this guide, and key rules to keep in mind.*
+
 > **No prior MCP Apps experience required.** This guide walks through the basics of the MCP Apps specification (SEP-1865), how the `/mcp-app-development` command works in Google Antigravity, and how to build, test, and package two inline MCP Apps in **Go**—starting with a small Hello World card and expanding it into an interactive checklist.
 >
 > **Companion Repository:** All source code, tests, plugin manifests, and diagrams for this post live at [github.com/rominirani/antigravity-mcp-apps-guide](https://github.com/rominirani/antigravity-mcp-apps-guide).
