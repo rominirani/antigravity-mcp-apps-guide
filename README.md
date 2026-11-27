@@ -4,8 +4,10 @@
 
 Hands-on guides and runnable MCP App plugins for the [MCP Apps specification (SEP-1865)](https://github.com/modelcontextprotocol/ext-apps/blob/main/specification/2026-01-26/apps.mdx) and Google Antigravity.
 
-- **Start here (Go introductory guide):** **[`BLOG_POST.md`](./BLOG_POST.md)** — Introduces MCP Apps basics, scaffolding with `/mcp-app-development`, and two inline Go + `//go:embed` examples under [`go-examples/`](./go-examples/).
-- **Extended multi-surface guide:** **[`TUTORIAL.md`](./TUTORIAL.md)** — Covers side panels (`aux_pane`), full-page sidebar views (`global`), custom file viewers (`.archmap`), and companion skills using Python and TypeScript under [`examples/`](./examples/).
+- **Post 1 (Inline Go MCP Apps):** **[`BLOG_POST.md`](./BLOG_POST.md)** — Introduces MCP Apps basics and scaffolds two inline Go examples with `/mcp-app-development`.
+- **Post 2 (Side Panel & Full-Page Views):** **[`BLOG_POST_2.md`](./BLOG_POST_2.md)** — Builds a Local HTTP Request Workbench in Go across `aux_pane` and `global` views with capability gating.
+- **Post 3 (Custom File Viewers & Companion Skills):** **[`BLOG_POST_3.md`](./BLOG_POST_3.md)** — Builds a `.jsonl` Log Explorer file viewer (`antigravity-file://`) and pairs it with a companion `SKILL.md`.
+- **Extended multi-surface reference:** **[`TUTORIAL.md`](./TUTORIAL.md)** — Additional Python and TypeScript examples under [`examples/`](./examples/).
 
 ## Prerequisites
 
@@ -61,10 +63,12 @@ Every plugin in [`examples/`](./examples/) includes its own `README.md`, verific
 
 ```text
 antigravity-mcp-apps-guide/
-├── BLOG_POST.md                          # Introductory guide (Go + /mcp-app-development)
+├── BLOG_POST.md                          # Post 1: Inline Go MCP Apps + /mcp-app-development
+├── BLOG_POST_2.md                        # Post 2: Side Panel & Full-Page Views (HTTP Workbench)
+├── BLOG_POST_3.md                        # Post 3: Custom File Viewers & Skills (.jsonl Log Explorer)
 ├── TUTORIAL.md                           # Extended multi-surface guide (Python & TypeScript)
 ├── README.md                             # Quickstart & repository map
-├── images/                               # Overview infographic, PNG diagrams, and SVG sources
+├── images/                               # Hero infographics, PNG diagrams, and SVG sources
 ├── go-examples/
 │   ├── 01-hello-world/                   # Go + //go:embed Hello World inline plugin
 │   └── 02-quick-checklist/               # Go + //go:embed Quick Checklist inline plugin

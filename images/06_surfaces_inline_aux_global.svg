@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 350" width="960" height="350" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <rect width="960" height="350" rx="14" fill="#f8fafc"/>
+  <text x="480" y="38" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Three Ways an MCP App Can Render in Antigravity</text>
+
+  <!-- Card 1: Inline -->
+  <rect x="28" y="62" width="286" height="260" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="44" y="78" width="118" height="24" rx="12" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="103" y="94" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1d4ed8">Inline in Chat</text>
+  <text x="298" y="94" text-anchor="end" font-size="11" fill="#64748b">Post 1</text>
+
+  <!-- Mini UI sketch 1 -->
+  <rect x="44" y="114" width="254" height="106" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="56" y="126" width="140" height="12" rx="4" fill="#e2e8f0"/>
+  <rect x="56" y="146" width="230" height="44" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="171" y="172" text-anchor="middle" font-size="11.5" font-weight="600" fill="#1e40af">MCP App Card (in chat)</text>
+  <rect x="56" y="198" width="170" height="10" rx="4" fill="#e2e8f0"/>
+
+  <text x="44" y="246" font-size="12" font-weight="600" fill="#0f172a">Best for: Quick cards &amp; checklists</text>
+  <text x="44" y="268" font-size="11.5" fill="#475569">• Lives inside the chat history</text>
+  <text x="44" y="288" font-size="11.5" fill="#475569">• Scrolls away as you keep chatting</text>
+  <text x="44" y="308" font-size="11.5" fill="#475569">• Default when only resourceUri is set</text>
+
+  <!-- Card 2: Side Panel -->
+  <rect x="337" y="62" width="286" height="260" rx="12" fill="#ffffff" stroke="#0891b2" stroke-width="2"/>
+  <rect x="353" y="78" width="152" height="24" rx="12" fill="#ecfeff" stroke="#67e8f9" stroke-width="1"/>
+  <text x="429" y="94" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0e7490">Side Panel (aux_pane)</text>
+  <text x="607" y="94" text-anchor="end" font-size="11" font-weight="600" fill="#0891b2">This post</text>
+
+  <!-- Mini UI sketch 2 -->
+  <rect x="353" y="114" width="254" height="106" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="363" y="124" width="106" height="86" rx="5" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="416" y="144" text-anchor="middle" font-size="10.5" fill="#64748b">Chat</text>
+  <rect x="373" y="154" width="84" height="10" rx="3" fill="#e2e8f0"/>
+  <rect x="373" y="170" width="68" height="10" rx="3" fill="#e2e8f0"/>
+  <rect x="373" y="186" width="84" height="10" rx="3" fill="#e2e8f0"/>
+  <rect x="477" y="124" width="120" height="86" rx="5" fill="#cffafe" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="537" y="162" text-anchor="middle" font-size="11.5" font-weight="600" fill="#155e75">Side Panel</text>
+  <text x="537" y="179" text-anchor="middle" font-size="10" fill="#0e7490">Stays open</text>
+
+  <text x="353" y="246" font-size="12" font-weight="600" fill="#0f172a">Best for: Workbenches beside chat</text>
+  <text x="353" y="268" font-size="11.5" fill="#475569">• Opens from chat or the + menu</text>
+  <text x="353" y="288" font-size="11.5" fill="#475569">• Agent calls update it in place</text>
+  <text x="353" y="308" font-size="11.5" fill="#475569">• Can send messages back to chat</text>
+
+  <!-- Card 3: Full Page -->
+  <rect x="646" y="62" width="286" height="260" rx="12" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="662" y="78" width="142" height="24" rx="12" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="733" y="94" text-anchor="middle" font-size="11.5" font-weight="700" fill="#6d28d9">Full Page (global)</text>
+  <text x="916" y="94" text-anchor="end" font-size="11" font-weight="600" fill="#7c3aed">This post</text>
+
+  <!-- Mini UI sketch 3 -->
+  <rect x="662" y="114" width="254" height="106" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <rect x="672" y="124" width="46" height="86" rx="5" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="695" y="144" text-anchor="middle" font-size="9.5" fill="#64748b">Menu</text>
+  <rect x="679" y="154" width="32" height="10" rx="3" fill="#c4b5fd"/>
+  <rect x="679" y="170" width="32" height="8" rx="3" fill="#cbd5e1"/>
+  <rect x="726" y="124" width="180" height="86" rx="5" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="816" y="162" text-anchor="middle" font-size="11.5" font-weight="600" fill="#5b21b6">Full-Width App</text>
+  <text x="816" y="179" text-anchor="middle" font-size="10" fill="#6d28d9">No active conversation</text>
+
+  <text x="662" y="246" font-size="12" font-weight="600" fill="#0f172a">Best for: Workspace-wide tools</text>
+  <text x="662" y="268" font-size="11.5" fill="#475569">• Opens from Plugins in left sidebar</text>
+  <text x="662" y="288" font-size="11.5" fill="#475569">• Independent of any chat thread</text>
+  <text x="662" y="308" font-size="11.5" fill="#475569">• Hides chat-only buttons via gating</text>
+</svg>

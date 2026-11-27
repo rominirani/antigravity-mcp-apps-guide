@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 390" width="960" height="390" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr-b4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr-t4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0f766e"/>
+    </marker>
+    <marker id="arr-p4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="390" rx="14" fill="#f8fafc"/>
+  <text x="480" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">How a Custom File Viewer Works for .jsonl Files in Antigravity</text>
+
+  <!-- Step 1: Workspace File -->
+  <rect x="28" y="84" width="184" height="148" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+  <text x="120" y="112" text-anchor="middle" font-size="13.5" font-weight="700" fill="#92400e">1. Workspace File</text>
+  <rect x="44" y="128" width="152" height="44" rx="7" fill="#ffffff" stroke="#fcd34d" stroke-width="1.2"/>
+  <text x="120" y="148" text-anchor="middle" font-size="12.5" font-weight="700" font-family="ui-monospace, Menlo, monospace" fill="#0f172a">app.jsonl</text>
+  <text x="120" y="164" text-anchor="middle" font-size="10.5" fill="#92400e">User clicks file</text>
+  <text x="120" y="198" text-anchor="middle" font-size="11" fill="#78350f">Matches file entrypoint</text>
+  <text x="120" y="214" text-anchor="middle" font-size="10.5" font-family="ui-monospace, Menlo, monospace" fill="#b45309">extensions: [".jsonl"]</text>
+
+  <!-- Step 2: Antigravity Host -->
+  <rect x="276" y="72" width="268" height="172" rx="12" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+  <text x="410" y="98" text-anchor="middle" font-size="13.5" font-weight="700" fill="#155e75">2. Antigravity Host</text>
+
+  <rect x="292" y="112" width="236" height="52" rx="7" fill="#ffffff" stroke="#67e8f9" stroke-width="1.4"/>
+  <text x="410" y="132" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f172a">Creates opaque file URI</text>
+  <text x="410" y="150" text-anchor="middle" font-size="10.5" font-family="ui-monospace, Menlo, monospace" fill="#0e7490">antigravity-file://.../app.jsonl</text>
+
+  <rect x="292" y="176" width="236" height="52" rx="7" fill="#f0fdf4" stroke="#86efac" stroke-width="1.4"/>
+  <text x="410" y="196" text-anchor="middle" font-size="11.5" font-weight="700" fill="#166534">Serves file content safely</text>
+  <text x="410" y="214" text-anchor="middle" font-size="10.5" fill="#15803d">Answers resources/read directly</text>
+
+  <!-- Step 3: Custom Log Explorer UI -->
+  <rect x="614" y="64" width="318" height="190" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="773" y="89" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1d4ed8">3. .jsonl Log Explorer Tab</text>
+
+  <rect x="632" y="102" width="282" height="94" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+  <rect x="644" y="112" width="46" height="18" rx="9" fill="#e0f2fe"/>
+  <text x="667" y="125" text-anchor="middle" font-size="10" font-weight="700" fill="#0369a1">INFO</text>
+  <rect x="696" y="112" width="52" height="18" rx="9" fill="#fef3c7"/>
+  <text x="722" y="125" text-anchor="middle" font-size="10" font-weight="700" fill="#b45309">WARN</text>
+  <rect x="754" y="112" width="56" height="18" rx="9" fill="#fee2e2" stroke="#f87171" stroke-width="1"/>
+  <text x="782" y="125" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c">ERROR</text>
+
+  <text x="646" y="150" font-size="10.5" font-family="ui-monospace, Menlo, monospace" fill="#b91c1c">10:14:02 ERROR  db timeout (api.go:84)</text>
+  <text x="646" y="168" font-size="10.5" font-family="ui-monospace, Menlo, monospace" fill="#b45309">10:14:05 WARN   retrying pool...</text>
+  <text x="646" y="186" font-size="10.5" font-family="ui-monospace, Menlo, monospace" fill="#475569">10:14:07 INFO   request served 200</text>
+
+  <rect x="632" y="208" width="136" height="30" rx="6" fill="#ecfeff" stroke="#0891b2" stroke-width="1.2"/>
+  <text x="700" y="227" text-anchor="middle" font-size="11" font-weight="600" fill="#0e7490">Open Source File</text>
+
+  <rect x="778" y="208" width="136" height="30" rx="6" fill="#f5f3ff" stroke="#a78bfa" stroke-width="1.2"/>
+  <text x="846" y="227" text-anchor="middle" font-size="11" font-weight="600" fill="#5b21b6">Ask Agent</text>
+
+  <!-- Bottom Action Targets -->
+  <rect x="614" y="298" width="152" height="62" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="1.8"/>
+  <text x="690" y="324" text-anchor="middle" font-size="12" font-weight="700" fill="#155e75">Side-Pane File Tab</text>
+  <text x="690" y="344" text-anchor="middle" font-size="10.5" font-family="ui-monospace, Menlo, monospace" fill="#0e7490">toggle-aux-pane</text>
+
+  <rect x="780" y="298" width="152" height="62" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="856" y="324" text-anchor="middle" font-size="12" font-weight="700" fill="#5b21b6">Chat Conversation</text>
+  <text x="856" y="344" text-anchor="middle" font-size="10.5" font-family="ui-monospace, Menlo, monospace" fill="#6d28d9">app.sendMessage()</text>
+
+  <!-- Bottom Left Privacy Note -->
+  <rect x="276" y="298" width="268" height="62" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="410" y="323" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">Privacy by Default</text>
+  <text x="410" y="343" text-anchor="middle" font-size="11" fill="#475569">Raw disk paths stay hidden from the UI</text>
+
+  <!-- Arrows -->
+  <line x1="212" y1="158" x2="270" y2="158" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-b4)"/>
+  <line x1="544" y1="138" x2="608" y2="138" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-b4)"/>
+  <text x="577" y="130" text-anchor="middle" font-size="10.5" fill="#1e40af">URI</text>
+
+  <line x1="614" y1="202" x2="550" y2="202" stroke="#0f766e" stroke-width="2" marker-end="url(#arr-t4)"/>
+  <text x="580" y="194" text-anchor="middle" font-size="10" font-weight="600" fill="#115e59">read</text>
+
+  <line x1="690" y1="254" x2="690" y2="292" stroke="#0f766e" stroke-width="2" marker-end="url(#arr-t4)"/>
+  <line x1="856" y1="254" x2="856" y2="292" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr-p4)"/>
+</svg>

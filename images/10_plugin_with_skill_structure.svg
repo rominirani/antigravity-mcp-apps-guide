@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <rect width="960" height="280" rx="14" fill="#f8fafc"/>
+  <text x="480" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Putting It Together: One Antigravity Plugin Bundle</text>
+
+  <!-- Outer Plugin Container -->
+  <rect x="34" y="58" width="892" height="196" rx="14" fill="#ffffff" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="54" y="84" font-size="13" font-weight="700" fill="#334155">Antigravity Plugin Folder (installed as one unit with agy plugin install .)</text>
+
+  <!-- Box 1: Manifest -->
+  <rect x="56" y="102" width="254" height="130" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.8"/>
+  <text x="183" y="128" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1d4ed8">1. Plugin Identity</text>
+  <text x="183" y="152" text-anchor="middle" font-size="11.5" font-family="ui-monospace, Menlo, monospace" fill="#1e40af">plugin.json + assets/logo.svg</text>
+  <text x="183" y="180" text-anchor="middle" font-size="11.5" fill="#475569">Name, description, starter</text>
+  <text x="183" y="198" text-anchor="middle" font-size="11.5" fill="#475569">prompts, and custom file</text>
+  <text x="183" y="216" text-anchor="middle" font-size="11.5" fill="#475569">viewer tab icon</text>
+
+  <!-- Box 2: MCP App Server -->
+  <rect x="352" y="102" width="256" height="130" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="1.8"/>
+  <text x="480" y="128" text-anchor="middle" font-size="13.5" font-weight="700" fill="#155e75">2. Go MCP App Server</text>
+  <text x="480" y="152" text-anchor="middle" font-size="11.5" font-family="ui-monospace, Menlo, monospace" fill="#0e7490">mcp_config.json + Go binary</text>
+  <text x="480" y="180" text-anchor="middle" font-size="11.5" fill="#475569">Embedded HTML UI + tools</text>
+  <text x="480" y="198" text-anchor="middle" font-size="11.5" fill="#475569">for inline, side panel, full</text>
+  <text x="480" y="216" text-anchor="middle" font-size="11.5" fill="#475569">page, or custom file viewer</text>
+
+  <!-- Box 3: Companion Skill -->
+  <rect x="650" y="102" width="254" height="130" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="777" y="128" text-anchor="middle" font-size="13.5" font-weight="700" fill="#5b21b6">3. Companion Skill</text>
+  <text x="777" y="152" text-anchor="middle" font-size="11.5" font-family="ui-monospace, Menlo, monospace" fill="#6d28d9">skills/&lt;name&gt;/SKILL.md</text>
+  <text x="777" y="180" text-anchor="middle" font-size="11.5" fill="#475569">Teaches the agent when to</text>
+  <text x="777" y="198" text-anchor="middle" font-size="11.5" fill="#475569">use your tools and how to</text>
+  <text x="777" y="216" text-anchor="middle" font-size="11.5" fill="#475569">investigate log issues</text>
+</svg>
